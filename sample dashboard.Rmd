@@ -1,0 +1,52 @@
+---
+title: "Sample Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+
+expense <- read.csv('dailyexpenses.csv')
+pc <- read.csv('piechart.csv')
+count <- table(mtcars$gear)
+```
+
+## Column {data-width=650}
+
+
+### Chart A - Pie Chart
+
+```{r}
+pie <- ggplot(pc,aes(x="",y=amount,fill=factor(expense)))+
+  geom_bar(width=1,stat="Identity")+
+  labs(fill="expenses",
+       x=NULL,y=NULL,title="Pie Chart of Expenses")
+pie + coord_polar(theta = 'y',start=0)
+```
+
+## Column {data-width=350}
+
+
+### Chart B - Histogram
+
+```{r}
+ggplot(expense,aes(x=Medical))+
+  geom_histogram(binwidth = 15,
+                 color='red',
+                 fill='yellow')
+```
+
+### Chart C - Bar Plot
+
+```{r}
+barplot(count,main="Simple Barplot",  #plot title
+        xlab="Gears", #x-axis
+        ylab="Count", #y-axis
+        legend=rownames(count), #legend
+        col=c('red','blue','yellow'))  #bar colors
+```
+

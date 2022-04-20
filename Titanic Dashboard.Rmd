@@ -1,0 +1,94 @@
+---
+title: "Titanic Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+
+titanic <- read.csv('titanic.csv', stringsAsFactors = FALSE)
+titanic$sex <- as.factor(titanic$sex)
+titanic$pclass <- as.factor(titanic$pclass)
+titanic$survived <- as.factor(titanic$survived)
+titanic$embarked <- as.factor(titanic$embarked)
+
+```
+
+## Column {data-width=340}
+
+
+### Chart A - Passenger Survival Count by Gender
+
+```{r}
+ggplot(titanic,aes(x=sex,fill=survived))+
+  theme_light()+
+  geom_bar()+
+  labs(y="Passenger Count",
+       title="Passenger Survival Count by Gender")
+```
+
+### Chart B - Passenger Survival Count by Class
+```{r}
+ggplot(titanic,aes(x=pclass,fill=survived))+
+  theme_light()+
+  geom_bar()+
+  labs(y="Passenger Count",
+       title="Passenger Survival Count by Class")
+```
+
+## Column {data-width=330}
+
+
+### Chart C - Titanic Survival count by class and gender
+
+```{r}
+ggplot(titanic,aes(x=sex,fill=survived))+
+  theme_light()+
+  facet_grid(~pclass)+
+  geom_bar()+
+  labs(y="Passenger Count",
+       title="Titanic Survival count by class and gender")
+```
+
+### Chart D - Titanic age distribution
+
+```{r}
+
+ggplot(titanic,aes(x=age,fill=survived))+
+  theme_bw()+
+  geom_histogram(binwidth = 5)+
+  labs(y="Passenger Count",
+       x="Age",
+       title="Titanic age distribution")
+```
+
+## Column {data-width=330}
+
+
+### Chart E - Titanic survival rate by age, class and gender
+
+```{r}
+ggplot(titanic,aes(x=age,fill=survived))+
+  theme_bw()+
+  facet_wrap(sex~pclass)+
+  geom_density(alpha=0.5)+
+  labs(y="age",
+       x="survived",
+       title="Titanic survival rate by age, class and gender")
+```
+
+### Chart F - Titanic survival rate by age
+
+```{r}
+ggplot(titanic,aes(x=survived,y=age))+
+  theme_bw()+
+  geom_boxplot(binwidth = 5)+
+  labs(y="age",
+       x="survived",
+       title="Titanic survival rate by age")
+```
+
